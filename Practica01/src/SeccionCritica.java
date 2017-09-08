@@ -1,31 +1,32 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 
 /**
+ * Sección critica que suma iterativamente los primeros mil números naturales
+ * cada vez que se ingresa a esta.
  *
- * @author Luis
+ * Si se ingresa dos veces o más a la misma instancia entonces la suma se va
+ * acumalando, es decir, no se reinicia la variable suma.
+ *
+ * @author Flores González Luis.
  */
 public class SeccionCritica {
-    
+
     int suma = 0;
-    
-    void incrementar(){
-        suma++;
-    }
-    
-    public int get(){
-        return suma;
-    }
-    /*
-    public int getSeccionCritica(){                
-        for(int i = 0; i < 1000; i++){
+
+    /**
+     * Ingresa a la sección critica y suma los primeros mil números naturales.
+     */
+    void ingresar() {
+        for (int i = 0; i < 1000; i++) {
             suma = suma + i;
-        }        
+        }
+    }
+
+    /**
+     * Devuelve la suma de los primeros mil números naturales.
+     *
+     * @return Suma de los primeros mil números naturales.
+     */
+    public int getSuma() {
         return suma;
     }
-    */
-    
 }

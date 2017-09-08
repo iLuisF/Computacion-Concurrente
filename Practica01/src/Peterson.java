@@ -2,15 +2,17 @@
 import java.util.concurrent.atomic.AtomicIntegerArray;
 
 /**
- * Algoritmo de Peterson para dos hilos.
+ * Algoritmo de Peterson para dos hilos. Donde en cada hilo se iteran 20 veces,
+ * compitiendo en cada iteración para entrar a su sección critica y utilizando
+ * el algoritmo de Peterson para manejar la exclusión mutua.
  *
  * @author Flores González Luis.
  */
 public class Peterson {
 
     //1 es true, 0 es false
-    private volatile int turno;
     private final AtomicIntegerArray flag = new AtomicIntegerArray(2);
+    private volatile int turno;
 
     /**
      * Inicializa los valores requeridos para el funcionamiento del algoritmo de
@@ -35,9 +37,13 @@ public class Peterson {
             //Esperar.
         }
         //Inicio sección critica.
-        for (int i = 0; i < 500; i++) {
-            seccionCritica.incrementar();
+        System.out.println("Comenzo sección critica del algoritmo de Peterson "
+                + "del hilo: " + id);
+        for (int i = 0; i < 20; i++) {
+            seccionCritica.ingresar();
         }
+        System.out.println("Finalizo sección critica del algoritmo de Peterson "
+                + "del hilo: " + id);
         //Fin sección critica. 
         this.flag.set(id, 0);
     }

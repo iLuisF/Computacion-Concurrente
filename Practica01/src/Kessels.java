@@ -2,7 +2,9 @@
 import java.util.concurrent.atomic.AtomicIntegerArray;
 
 /**
- * Algoritmo de Kessels para dos hilos.
+ * Algoritmo de Kessels para dos hilos. Donde en cada hilo se iteran 20 veces,
+ * compitiendo en cada iteración para entrar a su sección critica y utilizando
+ * el algoritmo de Kessels para manejar la exclusión mutua.
  *
  * @author Flores González Luis.
  */
@@ -20,20 +22,19 @@ public class Kessels {
         //(indice, valor)
         this.b.set(0, 0);
         this.b.set(1, 0);
-        this.turn.set(0, 0);
-        this.turn.set(1, 0);
     }
 
     /**
      * Comienza la ejecución del algoritmo de Kessels.
      *
-     * @param id Identificador del hilo con el que se ejecutara el algoritmo, 
+     * @param id Identificador del hilo con el que se ejecutara el algoritmo,
      * este solo puede ser 0 o 1.
      * @param seccionCritica Sección critica.
      */
     public void comenzar(int id, SeccionCritica seccionCritica) {
-        b.set(id, 1);
         AtomicIntegerArray local = new AtomicIntegerArray(2);
+        int otro = (id + 1) % 2; //Identificador del otro hilo.
+        b.set(id, 1);
         if (id == 0) {
             local.set(id, turn.get(1));
         }
@@ -41,13 +42,17 @@ public class Kessels {
             local.set(id, 1 - turn.get(0));
         }
         turn.set(id, local.get(id));
-        while (b.get(id) == 0 || local.get(id) != (turn.get(1 - id) + id) % 2) {
-            //esperar
+        while (!(b.get(otro) == 0 || local.get(id) != this.turn.get(otro))) {
+            //Esperar            
         }
         //Inicio sección critica.
-        for (int i = 0; i < 500; i++) {
-            seccionCritica.incrementar();
+        System.out.println("Comenzo sección critica del algoritmo de Kessels "
+                + "del hilo: " + id);
+        for (int i = 0; i < 20; i++) {
+            seccionCritica.ingresar();
         }
+        System.out.println("Finalizo sección critica del algoritmo de Kessels "
+                + "del hilo: " + id);
         //Fin sección critica.      
         b.set(id, 0);
     }
