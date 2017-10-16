@@ -1,4 +1,3 @@
-
 package concurrente;
 
 import java.util.Queue;
@@ -14,14 +13,14 @@ public class SemaforoGeneral {
 
     //Determina si un hilo puede ingresar al recurso compartido, dependiendo
     //de la cota propuesta en el costructor.
-    private int contador = 0;
+    private int contador = 1;
     //Guarda el orden en que los hilos requerian el acceso al recurso, para
     //cuando esté este disponible el hilo se ejecute.
     private final Queue<Thread> proceso = new LinkedList<>();
 
     /**
      * Construye un semaforo, ya sea binario o general.
-     * 
+     *
      * @param contador Si es 1, el semaforo sera binario en otro caso sera
      * general.
      */
@@ -41,7 +40,6 @@ public class SemaforoGeneral {
     public synchronized void esperar() throws InterruptedException {
         if (this.contador == 0) {
             wait();
-            //Thread.currentThread().suspend();
             proceso.add(Thread.currentThread());
         } else {
             this.contador--;
@@ -51,8 +49,8 @@ public class SemaforoGeneral {
     /**
      * El hilo que llamo a signal() permitira entregar su señal, si el
      * SemaforoGeneral ha alcanzado su limite. Incrementa el semáforo en uno y
-     * si hay algún proceso esperando lo despierta. 
-     * 
+     * si hay algún proceso esperando lo despierta.
+     *
      * Además a este método se le es conocido también como signal, up o señal.
      *
      */
@@ -61,7 +59,6 @@ public class SemaforoGeneral {
             proceso.remove().notify();
         } else {
             this.contador++;
-            //this.notify();
         }
     }
 
